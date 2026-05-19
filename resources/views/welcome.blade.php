@@ -34,13 +34,40 @@
         <header class="relative fixed z-50 w-full text-lg mb-20 not-has-[nav]:hidden px-10">
             @if (Route::has('login'))
                 <nav class="w-full flex items-center justify-between bg-transparent">
-                    @auth
-                        <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 text-[#] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
-                        </a>
+                   @auth
+                        <p
+                            class="text-4xl font-bold text-white tracking-widest leading-normal"
+                        > 
+                            itpedia
+                        </p>
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center gap-2 font-bold text-white">
+                                <span>
+                                    {{ Auth::user()->username ?? Auth::user()->name }}
+                                </span>
+
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <div x-show="open" @click.outside="open = false"
+                                class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg overflow-hidden text-[#091831]">
+
+                                <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">
+                                    Profile
+                                </a>
+
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Logout
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
                     @else
                     <p
                         class="text-4xl font-bold text-white tracking-widest leading-normal"

@@ -51,6 +51,12 @@
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
+                        <a
+                            href="{{ url('/kamus') }}"
+                            class="inline-block px-5 py-1.5 text-white font-semibold border border-transparent rounded-lg text-sm leading-normal"
+                        > 
+                            Kamus
+                        </a>
 
                             <div x-show="open" @click.outside="open = false"
                                 class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg overflow-hidden text-[#091831]">

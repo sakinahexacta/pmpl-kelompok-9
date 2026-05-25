@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#7CA4B4] border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="w-full px-12">
-        <div class="flex items-center gap-80 h-16">
+        <div class="flex items-center justify-between h-16 w-full">
             <div class="grid grid-cols-3 items-center h-16 w-full">
                 <!-- KIRI -->
                 <div class="flex justify-start">
@@ -15,27 +15,35 @@
                 </div>
 
                 <!-- TENGAH -->
-                <form action="{{ route('kamus') }}" method="GET">
-                    <div class="w-[400px] h-[50px] bg-[#023859] rounded-full flex items-center px-2">
-                        
-                        <input 
-                            type="text" 
-                            name="keyword"
-                            placeholder="Cari Istilah..."
-                            class="w-full h-[35px] rounded-full px-4 text-gray-700 border-none outline-none"
-                        >
+                <div class="flex-1 flex justify-center">
+                    <form action="{{ route('kamus') }}" method="GET" class="w-full max-w-[600px]">
+                        <div class="h-[50px] bg-[#023859] rounded-full flex items-center px-2 w-full">
+                            
+                            <input 
+                                type="text" 
+                                name="keyword"
+                                placeholder="Cari Istilah..."
+                                class="w-full h-[35px] rounded-full px-4 text-gray-700 border-none outline-none"
+                            >
 
-                        <button
-                            type="submit"
-                            class="ml-4 px-2 py-2 bg-white hover:bg-[#19140035] rounded-full"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" color="#091831" viewBox="0 0 24 24">
-                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"/>
-                            </svg>
-                        </button>
+                            <button
+                                type="submit"
+                                class="ml-2 px-2 py-2 bg-white hover:bg-[#7B9EA8] rounded-full group transition"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    class="text-[#091831] group-hover:text-white transition"
+                                >
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"/>
+                                </svg>
+                            </button>
 
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
 
                 <!-- KANAN -->
                 <div class="flex justify-end">

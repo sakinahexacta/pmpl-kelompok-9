@@ -1,11 +1,33 @@
 <x-app-layout>
     <div class="mx-9 mt-1 sticky top-16 z-10 flex flex-wrap gap-2 bg-gray-100 pb-5">
+        @php
+            $activeCategory = request('category');
+        @endphp
+        <a href="{{ route('kamus') }}">
+            <div class="
+                w-[140px] h-[35px] rounded-full ml-3 mt-3 mb-1 border-2 transition duration-300
+                flex items-center justify-center text-sm font-bold
+                {{ !$activeCategory
+                    ? 'bg-[#7B9EA8] text-white border-transparent'
+                    : 'bg-transparent text-[#091831] border-[#091831] hover:bg-[#D6E3E8]'
+                }}
+            ">
+                Semua
+            </div>
+        </a>
         @foreach ($categories as $category)
-        <div class="bg-transparent w-[140px] h-[35px] rounded-full ml-3 mt-3 mb-1 border-2 border-[#091831] hover:bg-[#D6E3E8] hover:border-transparent active:bg-[#7B9EA8] transition duration-300 sticky">
-            <div class="flex items-center justify-center h-full text-[#091831] text-sm font-bold">
+        <a href="{{ route('kamus', ['category' => $category->id_kategori]) }}">
+            <div class="
+                w-[140px] h-[35px] rounded-full ml-3 mt-3 mb-1 border-2 transition duration-300
+                flex items-center justify-center text-sm font-bold
+                {{ $activeCategory == $category->id_kategori
+                    ? 'bg-[#7B9EA8] text-white border-transparent'
+                    : 'bg-transparent text-[#091831] border-[#091831] hover:bg-[#D6E3E8] hover:border-transparent'
+                }}
+            ">
                 {{ $category->nama_kategori }}
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 
@@ -39,7 +61,7 @@
                     @endif
                     @foreach ($terms as $term)
                         <div id="{{ strtoupper(substr($term->nama_istilah, 0, 1)) }}"
-                        class=" scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,1)] overflow-hidden shadow-sm sm:rounded-lg border-2 border-[#7B9EA8] mb-5">
+                        class=" scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,2)] overflow-hidden shadow-sm sm:rounded-lg border-2 border-[#7B9EA8] mb-5">
                             <div class="pt-3 px-5 text-sm font-semibold text-[#7B9EA8]">
                                 {{ $term->kategori->nama_kategori }}
                             </div>
@@ -65,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="sticky absolute bottom-5 w-[250px] items-center text-center py-3 bg-[#091831] text-white text-sm flex items-center justify-center rounded-full left-1/2 transform -translate-x-1/2 gap-5 px-3">
+    <div class="sticky absolute bottom-5 w-[250px] items-center text-center py-3 bg-[#091831] shadow-[4px_4px_10px_rgba(0,0,0,0.5)] text-white text-sm flex items-center justify-center rounded-full left-1/2 transform -translate-x-1/2 gap-5 px-3">
         <div class="flex flex-col items-center justify-center cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
                 <path d="M0 0h24v24H0z" fill="none" />

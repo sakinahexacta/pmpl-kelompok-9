@@ -19,12 +19,19 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" placeholder="Password" />
-
+                <x-text-input id="password" class="block mt-1 w-full"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Password"
+                    minlength="8"
+                    maxlength="15"
+                    oninvalid="this.setCustomValidity('Password minimal 8 karakter dan maksimal 15 karakter')"
+                    oninput="this.setCustomValidity('')"/>
+                <div class="mt-1 text-xs text-gray-600">
+                    Password harus terdiri dari minimal 8 karakter dan maksimal 15 karakter.
+                </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 

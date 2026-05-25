@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TermController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -14,14 +15,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/kamus', function () {
-    return view('halamankamus');
-})->name('kamus');
+Route::get('/kamus', [TermController::class, 'show'])->name('kamus');
 
-Route::get('/search', function () {
-    $query = request('query');
+Route::get('/halamankamus', [TermController::class, 'show']);
 
-    return view('search-results', compact('query'));
-})->name('search');
+Route::get('/dashboard', [TermController::class, 'show']);
 
 require __DIR__.'/auth.php';
+

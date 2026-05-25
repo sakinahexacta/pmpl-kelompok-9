@@ -15,7 +15,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/kamus', [TermController::class, 'show'])->name('kamus');
+Route::get('/kamus', [TermController::class, 'index'])->name('kamus');
 
 Route::get('/halamankamus', [TermController::class, 'show']);
 

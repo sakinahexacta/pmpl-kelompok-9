@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-[#7CA4B4] border-b border-gray-100">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 bg-[#7CA4B4] border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="w-full px-12">
         <div class="flex items-center gap-80 h-16">
@@ -15,12 +15,12 @@
                 </div>
 
                 <!-- TENGAH -->
-                <form action="{{ route('search') }}" method="GET">
+                <form action="{{ route('kamus') }}" method="GET">
                     <div class="w-[400px] h-[50px] bg-[#023859] rounded-full flex items-center px-2">
                         
                         <input 
                             type="text" 
-                            name="query"
+                            name="keyword"
                             placeholder="Cari Istilah..."
                             class="w-full h-[35px] rounded-full px-4 text-gray-700 border-none outline-none"
                         >

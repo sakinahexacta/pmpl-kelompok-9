@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
 {
+    protected $table = 'terms';
+    
     protected $primaryKey = 'id_istilah';
 
     protected $fillable = [
@@ -13,4 +15,9 @@ class Term extends Model
         'definisi',
         'id_kategori'
     ];
+
+    public function kategori()
+{
+    return $this->belongsTo(KategoriIstilah::class, 'id_kategori');
+}
 }

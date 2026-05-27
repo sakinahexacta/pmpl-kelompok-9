@@ -60,8 +60,9 @@
                         </div>
                     @endif
                     @foreach ($terms as $term)
+                    <a href="{{ route('term.show', $term->id_istilah) }}">
                         <div id="{{ strtoupper(substr($term->nama_istilah, 0, 1)) }}"
-                        class=" scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,2)] overflow-hidden shadow-sm sm:rounded-lg border-2 border-[#7B9EA8] mb-5">
+                        class="scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,2)] sm:rounded-lg border-2 border-[#7B9EA8] mb-5 hover:scale-[1.01] transition duration-200 cursor-pointer">
                             <div class="pt-3 px-5 text-sm font-semibold text-[#7B9EA8]">
                                 {{ $term->kategori->nama_kategori }}
                             </div>
@@ -82,12 +83,13 @@
                                 </span>
                             </div>
                         </div>
+                    </a>
                     @endforeach
                 </div>
             </div>
         </div>
     </div>
-    <div class="sticky absolute bottom-5 w-[250px] items-center text-center py-3 bg-[#091831] shadow-[4px_4px_10px_rgba(0,0,0,0.5)] text-white text-sm flex items-center justify-center rounded-full left-1/2 transform -translate-x-1/2 gap-5 px-3">
+    <div class="sticky absolute bottom-5 w-[250px] items-center text-center py-3 bg-[#091831] shadow-[0px_4px_10px_rgba(0,0,0,0.5)] text-white text-sm flex items-center justify-center rounded-full left-1/2 transform -translate-x-1/2 gap-5 px-3">
         <div class="flex flex-col items-center justify-center cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
                 <path d="M0 0h24v24H0z" fill="none" />

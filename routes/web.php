@@ -17,6 +17,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/kamus', [TermController::class, 'index'])->name('kamus');
 
+Route::get('/kamus/{id}', [TermController::class, 'show'])->name('term.show');
+
 Route::get('/halamankamus', [TermController::class, 'show']);
 
 Route::get('/dashboard', [TermController::class, 'show']);

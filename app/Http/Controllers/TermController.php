@@ -8,26 +8,12 @@ use App\Models\KategoriIstilah;
 
 class TermController extends Controller
 {
-    public function show(Request $request)
+
+    public function show($id)
     {
-        $categories = KategoriIstilah::all();
+        $term = Term::with('kategori')->findOrFail($id);
 
-        $keyword = $request->keyword;
-
-        if ($keyword) {
-            $terms = Term::where('nama_istilah', 'LIKE', '%' . $keyword . '%')->get();
-
-            if ($terms->isEmpty()) {
-                $message = "Istilah '$keyword' tidak ditemukan.";
-            } else {
-                $message = null;
-            }
-        } else {
-            $terms = Term::orderByRaw('TRIM(LOWER(nama_istilah)) ASC')->get();
-            $message = null;
-        }
-
-        return view('halamankamus', compact('terms', 'categories', 'message'));
+        return view('detailistilah', compact('term'));
     }
 
     public function search(Request $request)

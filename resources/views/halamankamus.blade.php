@@ -97,13 +97,13 @@
             </svg>
             <p> History </p>
         </div>
-        <div class="flex flex-col items-center justify-center cursor-pointer">
+        <a href="{{ route('bookmark') }}" class="flex flex-col items-center justify-center cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 8h8m0 4H8m0 4h4m8-4V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6m6-5v3m0 3v-3m0 0h3m-3 0h-3" />
             </svg>
             <p> Bookmark </p>
-        </div>
+        </a>
         <div class="flex flex-col items-center justify-center cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
                 <path d="M0 0h24v24H0z" fill="none" />

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\BookmarkController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -22,6 +23,8 @@ Route::get('/kamus/{id}', [TermController::class, 'show'])->name('term.show');
 Route::get('/halamankamus', [TermController::class, 'show']);
 
 Route::get('/dashboard', [TermController::class, 'show']);
+
+Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
 
 require __DIR__.'/auth.php';
 

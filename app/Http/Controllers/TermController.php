@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Term;
 use App\Models\KategoriIstilah;
+use Illuminate\Support\Facades\Session;
+
 
 class TermController extends Controller
 {
@@ -25,13 +27,39 @@ class TermController extends Controller
         return response()->json($terms);
     }
 
+    // public function searchResults(Request $request)
+    // {
+    //     $keyword = $request->keyword;
+
+    //     $terms = Term::query();
+
+    //     if ($keyword) {
+    //         $terms->where('nama_istilah', 'LIKE', "%$keyword%");
+    //     }
+
+    //     $terms = $terms->get();
+
+    //     return view('halamankamus', compact('terms', 'keyword'));
+    // }
+
     public function index(Request $request)
     {
- 
         $categories = KategoriIstilah::all();
 
         $id_kategori = $request->query('category');
         $keyword = $request->query('keyword');
+
+        // 🔥 SIMPAN HISTORY SEARCH (SESSION)
+        if ($keyword) {
+            $history = session()->get('search_history', []);
+
+            // hindari duplikat berturut-turut
+            if (end($history) !== $keyword) {
+                $history[] = $keyword;
+            }
+
+            session()->put('search_history', $history);
+        }
 
         $terms = Term::with('kategori')
             ->when($id_kategori, function ($query) use ($id_kategori) {
@@ -49,7 +77,9 @@ class TermController extends Controller
             $message = "Istilah '$keyword' tidak ditemukan.";
         }
 
-        return view('halamankamus', compact('categories', 'terms', 'message'));
+        return view('halamankamus', compact('categories', 'terms', 'message', 'keyword'));
     }
+
+    
 }
 

@@ -3,32 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
-use App\Models\KategoriIstilah;
 use Illuminate\Http\Request;
-
 
 class HistoryController extends Controller
 {
     public function index()
     {
-        $histories = session('search_history', []);
-            $categories = KategoriIstilah::all();
-            $activeCategory = null;
+        $histories = History::all();
 
-            return view('history', compact(
-                'histories',
-                'categories',
-                'activeCategory'
-            ));
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Daftar history berhasil diambil',
+            'data' => $histories
+        ]);
     }
 
-    public function category($id)
+    public function store(Request $request)
     {
-        $histories = session('search_history', []);
-        $categories = KategoriIstilah::all();
-        $activeCategory = null;
+        $request->validate([
+            'id_istilah' => 'required|integer'
+        ]);
 
-        return view('history', compact('histories', 'categories', 'activeCategory'));
+        $history = History::create([
+            'id_user' => 1, // sementara untuk testing
+            'id_istilah' => $request->id_istilah
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'History berhasil disimpan',
+            'data' => $history
+        ]);
     }
-    
 }

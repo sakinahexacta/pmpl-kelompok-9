@@ -11,38 +11,32 @@ class BookmarkController extends Controller
 
     public function index()
     {
-        $bookmarks = Bookmark::all();
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Daftar data bookmark berhasil diambil',
-            'data'    => $bookmarks
-        ], 200);
+        if (!auth()->check()) {
+            return view('bookmark', [
+                'bookmarks' => collect(), // kosongkan data
+                'needLogin' => false
+            ]);
+        }
+
+        $bookmarks = auth()->user()
+            ->bookmarks()
+            ->with('term.kategori')
+            ->get();
+
+        return view('bookmark', compact('bookmarks'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'id_istilah' => 'required|integer',
-            'id_folder' => 'nullable|integer',
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
+
+        Bookmark::firstOrCreate([
+            'id_user' => auth()->id(),
+            'id_istilah' => $request->term_id
         ]);
 
-        // $bookmark = Bookmark::create([
-        //     'id_user' => Auth::id(),
-        //     'id_istilah' => $request->id_istilah,
-        //     'id_folder' => $request->id_folder,
-        // ]);
-
-        $bookmark = Bookmark::create([
-            'id_user' => 1,
-            'id_istilah' => $request->id_istilah,
-            'id_folder' => $request->id_folder,
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Bookmark berhasil disimpan',
-            'data' => $bookmark
-        ], 201);
+        return back()->with('success', 'Istilah berhasil disimpan');
     }
 }

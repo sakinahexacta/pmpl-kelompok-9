@@ -1,4 +1,94 @@
 <x-app-layout>
+   @if (session('success'))
+    <div id="successModal"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white w-[400px] rounded-2xl shadow-lg p-6 text-center relative animate-fadeIn">
+
+            <!-- Icon -->
+            <div class="w-16 h-16 mx-auto bg-green-500 rounded-full flex items-center justify-center mb-4 text-white">
+                {!! '
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 16 16" fill="none">
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                        <path d="m14.25 8.75c-.5 2.5-2.3849 4.85363-5.03069 5.37991-2.64578.5263-5.33066-.7044-6.65903-3.0523-1.32837-2.34784-1.00043-5.28307.81336-7.27989 1.81379-1.99683 4.87636-2.54771 7.37636-1.54771" />
+                        <polyline points="5.75 7.75 8.25 10.25 14.25 3.75" />
+                    </g>
+                </svg>
+                ' !!}
+            </div>
+
+            <!-- Text -->
+            <h2 class="text-lg font-bold text-gray-800">
+                Berhasil!
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                {{ session('success') }}
+            </p>
+
+            <!-- Button -->
+            <button onclick="document.getElementById('successModal').remove()"
+                    class="mt-5 bg-[#7B9EA8] text-white px-5 py-2 rounded-full hover:bg-[#5f8a96] transition">
+                OK
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const modal = document.getElementById('successModal');
+            if (modal) modal.remove();
+        }, 2500);
+    </script>
+    @endif
+
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white w-[400px] rounded-2xl shadow-lg p-6 text-center relative animate-fadeIn">
+
+            <!-- Tombol X -->
+            <button onclick="document.getElementById('loginModal').classList.add('hidden')"
+                    class="absolute top-3 right-3 ...">
+                ×
+            </button>
+
+            <!-- Icon -->
+            <div class="w-16 h-16 mx-auto bg-[#7B9EA8] rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+            </div>
+
+            <!-- Text -->
+            <h2 class="text-lg font-bold text-gray-800">
+                Akses Ditolak
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Anda harus login untuk dapat menyimpan istilah ke bookmark.
+            </p>
+
+            <!-- Button login -->
+            <a href="/login"
+            class="mt-5 inline-block bg-[#7B9EA8] text-white px-5 py-2 rounded-full hover:bg-[#5f8a96] transition">
+                Login Sekarang
+            </a>
+        </div>
+    </div>
+    <script>
+        function handleBookmark(button) {
+            let isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+
+            if (!isLoggedIn) {
+                document.getElementById('loginModal').classList.remove('hidden');
+                return;
+            }
+
+            button.closest('form').submit();
+        }
+    </script>
+
     <div class="mx-9 mt-1 sticky top-16 z-10 flex flex-wrap gap-2 bg-gray-100 pb-5">
         @php
             $activeCategory = request('category');
@@ -60,10 +150,10 @@
                         </div>
                     @endif
                     @foreach ($terms as $term)
+                    <div id="{{ strtoupper(substr($term->nama_istilah, 0, 1)) }}"
+                    class="scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,2)] sm:rounded-lg border-2 border-[#7B9EA8] mb-5 hover:scale-[1.01] transition duration-200 cursor-pointer">
                     <a href="{{ route('term.show', $term->id_istilah) }}">
-                        <div id="{{ strtoupper(substr($term->nama_istilah, 0, 1)) }}"
-                        class="scroll-mt-40 bg-gray-100 shadow-[3px_3px_1px_rgba(124,164,180,2)] sm:rounded-lg border-2 border-[#7B9EA8] mb-5 hover:scale-[1.01] transition duration-200 cursor-pointer">
-                            <div class="pt-3 px-5 text-sm font-semibold text-[#7B9EA8]">
+                        <div class="pt-3 px-5 text-sm font-semibold text-[#7B9EA8]">
                                 {{ $term->kategori->nama_kategori }}
                             </div>
 
@@ -74,16 +164,25 @@
                             <div class="pb-3 px-5 text-base text-[#7B9EA8]">
                                 {{ $term->definisi }}
                             </div>
-                            <div class="w-[45px] h-[30px] bg-[#7B9EA8] rounded-full flex items-center justify-center mb-3 ml-[1095px]">
-                                <span class="text-xs text-white font-bold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                        </a>
+                            <form method="POST" action="{{ route('bookmark.store') }}">
+                                @csrf
+
+                                <input type="hidden" name="term_id" value="{{ $term->id_istilah }}">
+
+                                <button type="button"
+                                    onclick="handleBookmark(this)"
+                                    class="w-[45px] h-[30px] bg-[#7B9EA8] rounded-full flex items-center justify-center mb-3 ml-[1095px] hover:bg-[#5f8a96] transition">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" color="white">
                                         <path d="M0 0h24v24H0z" fill="none" />
-                                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H7a2 2 0 0 0-2 2v15.138a.5.5 0 0 0 .748.434l5.26-3.005a2 2 0 0 1 1.984 0l5.26 3.006a.5.5 0 0 0 .748-.435V5a2 2 0 0 0-2-2m-5 4v3m0 3v-3m0 0H9m3 0h3" />
+                                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 3H7a2 2 0 0 0-2 2v15.138a.5.5 0 0 0 .748.434l5.26-3.005a2 2 0 0 1 1.984 0l5.26 3.006a.5.5 0 0 0 .748-.435V5a2 2 0 0 0-2-2z"/>
                                     </svg>
-                                </span>
-                            </div>
+
+                                </button>
+                            </form>
                         </div>
-                    </a>
                     @endforeach
                 </div>
             </div>
@@ -112,4 +211,17 @@
             <p> Home </p>
         </div>
     </div>
+
+    <script>
+    function handleBookmark(button) {
+        let isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+
+        if (!isLoggedIn) {
+            document.getElementById('loginModal').classList.remove('hidden');
+            return;
+        }
+
+        button.closest('form').submit();
+    }
+    </script>
 </x-app-layout>

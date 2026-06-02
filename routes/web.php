@@ -24,7 +24,14 @@ Route::get('/halamankamus', [TermController::class, 'show']);
 
 Route::get('/dashboard', [TermController::class, 'show']);
 
-Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
+Route::get('/history', [HistoryController::class, 'index'])->name('history');
+
+Route::get('/history/{id}', [HistoryController::class, 'category'])->name('history.category');
+
+Route::get('/bookmark', [BookmarkController::class, 'index'])
+    ->name('bookmark');
+
+Route::post('/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store') ;
 
 require __DIR__.'/auth.php';
 

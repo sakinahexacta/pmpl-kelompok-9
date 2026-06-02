@@ -9,7 +9,32 @@ class BookmarkController extends Controller
 {
     public function index()
     {
+        if (!auth()->check()) {
+            return view('bookmark', [
+                'bookmarks' => collect(), // kosongkan data
+                'needLogin' => false
+            ]);
+        }
 
-        return view('bookmark');
+        $bookmarks = auth()->user()
+            ->bookmarks()
+            ->with('term.kategori')
+            ->get();
+
+        return view('bookmark', compact('bookmarks'));
+    }
+
+    public function store(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
+
+        Bookmark::firstOrCreate([
+            'id_user' => auth()->id(),
+            'id_istilah' => $request->term_id
+        ]);
+
+        return back()->with('success', 'Istilah berhasil disimpan');
     }
 }

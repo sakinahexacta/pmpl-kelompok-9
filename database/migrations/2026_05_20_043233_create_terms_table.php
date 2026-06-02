@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('terms', function (Blueprint $table) {
             $table->id('id_istilah');
-<<<<<<< Updated upstream
-            $table->string('nama_istilah');
-            $table->text('definisi');
-=======
 
             $table->string('nama_istilah', 500);
             $table->string('pelafalan', 500)->nullable();
@@ -29,7 +25,6 @@ return new class extends Migration
             $table->text('penjelasan');
             $table->string('gambar', 500)->nullable();
 
->>>>>>> Stashed changes
             $table->unsignedBigInteger('id_kategori');
             $table->timestamps();
         });

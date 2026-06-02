@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {

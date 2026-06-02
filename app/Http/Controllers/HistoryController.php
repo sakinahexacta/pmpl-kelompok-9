@@ -3,18 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
+use App\Models\KategoriIstilah;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HistoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $histories = History::all();
+        if (!auth()->check()) {
+            return view('history', [
+                'histories' => collect(),
+                'categories' => KategoriIstilah::all(),
+                'activeCategory' => null,
+                'needLogin' => true
+            ]);
+        }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Daftar history berhasil diambil',
-            'data' => $histories
+        $categories = KategoriIstilah::all();
+
+        $activeCategory = $request->category; // ini dari URL ?category=1
+        $sort = $request->sort?? 'desc'; // ini dari URL ?sort=asc atau ?sort=desc
+
+        $histories = History::with(['term.kategori'])
+            ->when($activeCategory, function ($query) use ($activeCategory) {
+                $query->whereHas('term', function ($q) use ($activeCategory) {
+                    $q->where('id_kategori', $activeCategory);
+                });
+            })
+            ->orderBy('created_at', $sort)
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->created_at)->format('d M Y');
+            });
+
+        return view('history', [
+            'histories' => $histories,
+            'categories' => $categories,
+            'activeCategory' => $activeCategory,
+            'needLogin' => false
         ]);
     }
 
@@ -25,7 +53,7 @@ class HistoryController extends Controller
         ]);
 
         $history = History::create([
-            'id_user' => 1, // sementara untuk testing
+            'id_user' => auth()->id(),
             'id_istilah' => $request->id_istilah
         ]);
 

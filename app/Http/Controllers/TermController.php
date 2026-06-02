@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Term;
 use App\Models\KategoriIstilah;
+use App\Models\History;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 
 class TermController extends Controller
@@ -22,10 +24,23 @@ class TermController extends Controller
     {
         $keyword = $request->keyword;
 
-        $terms = Term::where('nama_istilah', 'LIKE', "%$keyword%")->get();
+        $results = Term::where('nama_istilah', 'like', "%$keyword%")->get();
 
-        return response()->json($terms);
+        if (Auth::check()) {
+           $term = Term::where('nama_istilah', 'like', "%$keyword%")
+                ->first();
+
+            if (Auth::check() && $term) {
+                History::create([
+                    'id_user' => Auth::id(),
+                    'id_istilah' => $term->id_istilah,
+                ]);
+            }
+        }
+
+        return view('kamus', compact('results', 'keyword'));
     }
+
 
     // public function searchResults(Request $request)
     // {
@@ -42,24 +57,12 @@ class TermController extends Controller
     //     return view('halamankamus', compact('terms', 'keyword'));
     // }
 
-    public function index(Request $request)
+   public function index(Request $request)
     {
         $categories = KategoriIstilah::all();
 
         $id_kategori = $request->query('category');
         $keyword = $request->query('keyword');
-
-        // 🔥 SIMPAN HISTORY SEARCH (SESSION)
-        if ($keyword) {
-            $history = session()->get('search_history', []);
-
-            // hindari duplikat berturut-turut
-            if (end($history) !== $keyword) {
-                $history[] = $keyword;
-            }
-
-            session()->put('search_history', $history);
-        }
 
         $terms = Term::with('kategori')
             ->when($id_kategori, function ($query) use ($id_kategori) {
@@ -71,13 +74,25 @@ class TermController extends Controller
             ->orderByRaw('TRIM(LOWER(nama_istilah)) ASC')
             ->get();
 
+        if ($keyword && Auth::check()) {
+
+            $term = Term::where('nama_istilah', 'like', "%$keyword%")->first();
+
+            if ($term) {
+                History::firstOrCreate([
+                    'id_user' => Auth::id(),
+                    'id_istilah' => $term->id_istilah,
+                ]);
+            }
+        }
+        
         $message = null;
 
         if ($keyword && $terms->isEmpty()) {
             $message = "Istilah '$keyword' tidak ditemukan.";
         }
 
-        return view('halamankamus', compact('categories', 'terms', 'message', 'keyword'));
+        return view('halamankamus', compact('categories', 'terms', 'keyword', 'message'));
     }
 
     public function store(Request $request)

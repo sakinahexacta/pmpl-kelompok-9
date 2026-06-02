@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -25,5 +26,22 @@ class AuthController extends Controller
             'status' => 'error',
             'message' => 'Username atau password salah'
         ], 401);
+    }
+
+        public function register(Request $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => 'pengguna'
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Register berhasil',
+            'user' => $user
+        ]);
     }
 }

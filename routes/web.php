@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -32,6 +33,10 @@ Route::get('/bookmark', [BookmarkController::class, 'index'])
     ->name('bookmark');
 
 Route::post('/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store') ;
+
+Route::get('/history', [HistoryController::class, 'index'])->name('history');
+
+Route::get('/history/{id}', [HistoryController::class, 'category'])->name('history.category');
 
 require __DIR__.'/auth.php';
 

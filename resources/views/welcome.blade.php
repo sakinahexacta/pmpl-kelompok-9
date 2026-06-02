@@ -117,22 +117,30 @@
          style="text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);">
             Temukan Kata Kuncimu!
         </p>
-        <div class="h-[80px] bg-[#7CA4B4] w-[700px] items-center rounded-full mt-6 mb-10 mx-auto">
-            <div class="flex items-center h-full px-5">
-                <input
-                    type="text"
-                    placeholder="Cari Istilah"
-                    class="w-full bg-white text-white placeholder-gray-600 text-xl font-bold rounded-full px-5 py-3 border-none outline-none"
-                />
-                <button
-                    class="ml-4 px-2 py-2 bg-white hover:bg-[#19140035] text-white font-semibold rounded-full"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" color="#091831" viewBox="0 0 24 24">
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"/>
-                    </svg>
-                </button>
+       <form action="{{ route('kamus') }}" method="GET">
+            <div class="h-[80px] bg-[#7CA4B4] w-[700px] items-center rounded-full mt-6 mb-10 mx-auto">
+                <div class="flex items-center h-full px-5">
+                    
+                    <input
+                        type="text"
+                        name="keyword"
+                        placeholder="Cari Istilah"
+                        value="{{ request('search') }}"
+                        class="w-full bg-white text-[#091831] placeholder:text-gray-600 text-xl font-bold rounded-full px-5 py-3 border-none outline-none"
+                    />
+
+                    <button
+                        type="submit"
+                        class="ml-4 px-2 py-2 bg-white hover:bg-[#19140035] text-white font-semibold rounded-full"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" color="#091831" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"/>
+                        </svg>
+                    </button>
+
+                </div>
             </div>
-        </div>
+        </form>
         <div class="h-[60px] bg-[#7CA4B4] w-[1350px] items-center mt-20 mx-auto rounded-t-full">
                 <p class="text-4xl text-white font-bold text-center tracking-wide leading-normal">
                     IT PEDIA

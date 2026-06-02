@@ -12,6 +12,6 @@ class KategoriIstilah extends Model
 
     public function terms()
     {
-        return $this->hasMany(Term::class, 'id_kategori');
+        return $this->hasMany(Term::class, 'id_kategori', 'id_kategori');
     }
 }

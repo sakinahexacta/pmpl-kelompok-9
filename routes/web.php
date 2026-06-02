@@ -34,5 +34,9 @@ Route::get('/bookmark', [BookmarkController::class, 'index'])
 
 Route::post('/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store') ;
 
+Route::get('/history', [HistoryController::class, 'index'])->name('history');
+
+Route::get('/history/{id}', [HistoryController::class, 'category'])->name('history.category');
+
 require __DIR__.'/auth.php';
 

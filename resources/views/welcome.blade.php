@@ -40,8 +40,17 @@
                         > 
                             itpedia
                         </p>
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center gap-2 font-bold text-white">
+                        <div class="relative flex items-center gap-4" x-data="{ open: false }">
+
+                            <a
+                                href="{{ url('/kamus') }}"
+                                class="px-5 py-1.5 text-white font-semibold rounded-lg text-sm"
+                            >
+                                Kamus
+                            </a>
+
+                            <button @click="open = !open"
+                                class="flex items-center gap-2 font-bold text-white bg-[#7CA4B4] px-5 py-1.5 rounded-lg text-sm">
                                 <span>
                                     {{ Auth::user()->username ?? Auth::user()->name }}
                                 </span>
@@ -51,16 +60,12 @@
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                        <a
-                            href="{{ url('/kamus') }}"
-                            class="inline-block px-5 py-1.5 text-white font-semibold border border-transparent rounded-lg text-sm leading-normal"
-                        > 
-                            Kamus
-                        </a>
 
-                            <div x-show="open" @click.outside="open = false"
-                                class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg overflow-hidden text-[#091831]">
-
+                            <div
+                                x-show="open"
+                                @click.outside="open = false"
+                                class="absolute right-0 top-full mt-2 w-40 bg-white rounded-lg shadow-lg overflow-hidden text-[#091831]"
+                            >
                                 <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">
                                     Profile
                                 </a>
@@ -71,8 +76,8 @@
                                         Logout
                                     </button>
                                 </form>
-
                             </div>
+
                         </div>
                     @else
                     <p

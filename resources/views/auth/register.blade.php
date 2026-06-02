@@ -3,6 +3,13 @@
         @csrf
 
         <!-- Name -->
+
+        <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
         <div>
             <x-input-label for="username" :value="__('Username')" />
             <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" placeholder="Username" />

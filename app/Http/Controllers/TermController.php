@@ -57,7 +57,7 @@ class TermController extends Controller
     //     return view('halamankamus', compact('terms', 'keyword'));
     // }
 
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $categories = KategoriIstilah::all();
 
@@ -97,24 +97,45 @@ class TermController extends Controller
 
     public function store(Request $request)
     {
-        $term = Term::create([
+
+        $request->validate([
+            'nama_istilah' => 'required|unique:terms,nama_istilah',
+            'definisi' => 'required',
+            'penjelasan' => 'required',
+            'id_kategori' => 'required',
+        ]);
+
+        $path = null;
+
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('gambar_terms', 'public');
+        }
+
+        $kategori = KategoriIstilah::find($request->id_kategori);
+
+        Term::create([
             'nama_istilah' => $request->nama_istilah,
             'definisi' => $request->definisi,
+            'penjelasan' => $request->penjelasan,
             'pelafalan' => $request->pelafalan,
             'singkatan' => $request->singkatan,
             'asal_bahasa' => $request->asal_bahasa,
-            'kategori_utama' => $request->kategori_utama,
             'sub_kategori' => $request->sub_kategori,
-            'penjelasan' => $request->penjelasan,
-            'gambar' => $request->gambar,
+            'gambar' => $path,
             'id_kategori' => $request->id_kategori,
+
+            'kategori_utama' => $kategori ? $kategori->nama_kategori : 'Tidak ada',
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Istilah berhasil ditambahkan',
-            'data' => $term
-        ]);
+        return redirect()->back()->with('success', 'Istilah berhasil ditambahkan');
+    }
+
+    public function edit($id)
+    {
+        $term = Term::findOrFail($id);
+        $categories = KategoriIstilah::all();
+
+        return view('admin.glosarium', compact('term', 'categories')) ;
     }
 
     public function showApi($id)
@@ -157,10 +178,8 @@ class TermController extends Controller
 
         $term->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Istilah berhasil dihapus'
-        ]);
+        return redirect()->back()
+            ->with('success', 'Istilah berhasil dihapus');
     }
 
     public function getAll()

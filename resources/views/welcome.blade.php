@@ -31,7 +31,7 @@
             />
             <div class="absolute inset-0 bg-[#091831]/60"></div>
         </div>
-        <header class="relative fixed z-50 w-full text-lg mb-20 not-has-[nav]:hidden px-10">
+        <header class="relative fixed z-50 w-full text-lg mb-8 not-has-[nav]:hidden px-10">
             @if (Route::has('login'))
                 <nav class="w-full flex items-center justify-between bg-transparent">
                    @auth
@@ -73,7 +73,7 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
-                                        Logout
+                                        {{ __('navigation.logout') }}
                                     </button>
                                 </form>
                             </div>
@@ -98,14 +98,14 @@
                             href="{{ route('login') }}"
                             class="inline-block px-5 py-1.5 text-[#091831] font-bold border border-transparent border-white bg-white rounded-lg text-sm leading-normal"
                         >
-                            Log in
+                            {{ __('navigation.login') }}
                         </a>
 
                         @if (Route::has('register'))
                             <a
                                 href="{{ route('register') }}"
                                 class="inline-block px-5 py-1.5 text-black border-[#7CA4B4] bg-[#7CA4B4] hover:border-[#19140035] border text-white font-bold rounded-lg text-sm leading-normal">
-                                Register
+                                {{ __('navigation.register') }}
                             </a>
                         @endif
                     </div>
@@ -113,6 +113,60 @@
                 </nav>
             @endif
         </header>
+
+       <div class="flex justify-end px-10 mt-3" x-data="{ langOpen: false }">
+
+            <div class="relative">
+
+                <button
+                    @click="langOpen = !langOpen"
+                    class="flex items-center gap-2 bg-[#7CA4B4] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#6b95a6]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 0 20"/>
+                        <path d="M12 2a15.3 15.3 0 0 0 0 20"/>
+                    </svg>
+
+                    <span>Language</span>
+
+                    <svg class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+
+                <div
+                    x-show="langOpen"
+                    @click.outside="langOpen = false"
+                    class="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg overflow-hidden text-[#091831]"
+                >
+                    <a href="{{ route('switch.lang', 'in') }}"
+                    class="block px-4 py-2 hover:bg-gray-100">
+                        🇮🇩 Indonesia
+                    </a>
+
+                    <a href="{{ route('switch.lang', 'en') }}"
+                    class="block px-4 py-2 hover:bg-gray-100">
+                        🇬🇧 English
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
         
         @if (Route::has('login'))
         <div class="h-14.5 hidden lg:block"></div>

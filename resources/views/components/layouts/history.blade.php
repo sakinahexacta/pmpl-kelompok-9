@@ -17,7 +17,7 @@
             </svg>
         </a>
         <p class="ml-3">
-            History
+            {{ __('navigation.history') }}
         </p>
     </div>
 

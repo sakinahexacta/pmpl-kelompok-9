@@ -17,7 +17,7 @@
             </svg>
         </a>
         <p class="ml-3">
-            Bookmark
+            {{ __('navigation.bookmark') }}
         </p>
     </div>
 

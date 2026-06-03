@@ -7,6 +7,8 @@ use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return view('welcome');
@@ -62,6 +64,13 @@ Route::get('/term/{id}/edit', [TermController::class, 'edit'])
 
 Route::delete('/term/{id}', [TermController::class, 'destroy'])
     ->name('term.destroy');
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        Session::put('locale', $locale); // Simpan pilihan bahasa ke session
+    }
+    return redirect()->back(); // Balikin user ke halaman sebelumnya
+})->name('switch.lang');
 
 require __DIR__.'/auth.php';
 

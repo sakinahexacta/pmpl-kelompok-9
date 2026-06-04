@@ -39,4 +39,15 @@ class BookmarkController extends Controller
 
         return back()->with('success', 'Istilah berhasil disimpan');
     }
+
+    public function destroy($id)
+    {
+        $bookmark = Bookmark::where('id', $id)
+            ->where('id_user', auth()->id())
+            ->firstOrFail();
+
+        $bookmark->delete();
+
+        return back()->with('success', 'Bookmark berhasil dihapus');
+    }
 }

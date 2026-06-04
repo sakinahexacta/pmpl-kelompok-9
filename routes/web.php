@@ -72,5 +72,11 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back(); // Balikin user ke halaman sebelumnya
 })->name('switch.lang');
 
+Route::post('/bookmark/{id}', [BookmarkController::class, 'store'])
+    ->name('bookmark.store');
+
+Route::delete('/bookmark/{id}', [BookmarkController::class, 'destroy'])
+    ->name('bookmark.destroy');
+
 require __DIR__.'/auth.php';
 

@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <div class="w-full h-16 bg-[#7B9EA8] text-white text-2xl font-bold flex items-center px-10">
+    <div class="w-full h-16 bg-[#7B9EA8] text-white text-2xl font-bold flex items-center px-10 fixed top-0 left-0 z-50">
         <a href="{{ route('kamus') }}" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 32 32">
                 <path d="M0 0h32v32H0z" fill="none" />

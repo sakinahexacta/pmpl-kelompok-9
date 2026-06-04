@@ -1,4 +1,33 @@
 <x-layouts.bookmark>
+
+    <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white w-[380px] rounded-2xl shadow-lg p-6 text-center relative animate-fadeIn">
+
+            <h2 class="text-lg font-bold text-gray-800">
+                Hapus Bookmark?
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Istilah ini akan dihapus dari bookmark kamu.
+            </p>
+
+            <div class="flex justify-center gap-4 mt-6">
+
+                <button onclick="closeDeleteModal()"
+                    class="px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition">
+                    Batal
+                </button>
+
+                <button id="confirmDeleteBtn"
+                    class="px-5 py-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition">
+                    Hapus
+                </button>
+
+            </div>
+        </div>
+    </div>
+
     @guest
     <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
@@ -51,7 +80,7 @@
                 <div class="w-[200px] h-[45px] rounded-full ml-auto mr-12 border-[4px] transition duration-300
                     flex items-center justify-center text-xl font-bold bg-transparent text-[#7B9EA8] border-[#7B9EA8] hover:bg-[#7B9EA8] hover:text-white">
                     <p class="mt-[-2px] ml-2">
-                        Buat Folder
+                        Edit Bookmark
                     </p>
                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" class="ml-2">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -61,12 +90,13 @@
                 </div>
         </div>
     </div>
-    <div class="flex flex-wrap gap-7 px-5 py-5">
+    <div class="flex flex-wrap gap-7 px-5 py-5 pt-20">
         @forelse ($bookmarks as $bookmark)
 
-            <div class="w-[650px] h-[80px] rounded-[10px] ml-14 transition duration-300
+           <div onclick="window.location='{{ route('term.show', $bookmark->term->id_istilah) }}'"
+                class="w-[650px] h-[80px] rounded-[10px] ml-14 transition duration-300
                 bg-[#D6E3E8] shadow-[2px_2px_4px_rgba(0,0,0,0.1)]
-                relative hover:scale-[1.01] flex items-center">
+                relative hover:scale-[1.01] flex items-center cursor-pointer">
 
                 <div class="w-[10px] h-full bg-[#7B9EA8] rounded-l-[10px] absolute top-0 left-0"></div>
 
@@ -80,14 +110,33 @@
                     </div>
                 </div>
 
-                <div class="ml-auto mr-5">
-                    <!-- icon kamu -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 20 20" color="black">
-                        <path d="M0 0h20v20H0z" fill="none" />
-                        <path fill="currentColor" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v9A2.5 2.5 0 0 0 4.5 16h9a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 13.5 2zm5 4.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0M7.5 18a3.5 3.5 0 0 1-2.45-1h9.45a2.5 2.5 0 0 0 2.5-2.5V5.05c.619.632 1 1.496 1 2.45v7a3.5 3.5 0 0 1-3.5 3.5z" />
-                    </svg>
-                </div>
+                {{-- DELETE BUTTON --}}
+                <div class="ml-auto mr-5"
+                    onclick="event.stopPropagation()">
 
+                    <form method="POST"
+                        action="{{ route('bookmark.destroy', $bookmark->id) }}">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="button"
+                                onclick="openDeleteModal(this)"
+                                data-id="{{ $bookmark->id }}"
+                                class="text-red-500 hover:text-red-700">
+
+                            <!-- icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z"/>
+                            </svg>
+
+                        </button>
+
+                    </form>
+
+                </div>
             </div>
 
         @empty
@@ -114,5 +163,32 @@
 
         @endforelse
     </div>
+
+    <script>
+        let deleteFormAction = null;
+
+        function openDeleteModal(button) {
+            deleteFormAction = button.closest('div').querySelector('form').action;
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = deleteFormAction;
+
+            form.innerHTML = `
+                @csrf
+                @method('DELETE')
+            `;
+
+            document.body.appendChild(form);
+            form.submit();
+        });
+        </script>
 
 </x-layouts.bookmark>

@@ -37,19 +37,6 @@
                 </div>
                 Publish
             </a>
-
-            <a href="{{ route('admin.pending') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#023859] font-semibold hover:bg-[#D6E3E8] transition">
-                <div class="w-9 h-9 flex items-center justify-center rounded-lg bg-[#D6E3E8]">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke-dasharray="66" stroke-width="2" d="M12 3h7v18h-14v-18h7Z"/>
-                            <path stroke-dasharray="14" stroke-dashoffset="14" d="M14.5 3.5v3h-5v-3"/>
-                            <path stroke-dasharray="8" stroke-dashoffset="8" stroke-width="2" d="M9 13h6"/>
-                        </g>
-                    </svg>
-                </div>
-                Pending Review
-            </a>
         </nav>
     </aside>
 

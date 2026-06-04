@@ -42,7 +42,7 @@
     </script>
     @endif
 
-    <div class="flex flex-col items-center justify-center gap-5 mt-10">
+    <div class="flex flex-col items-center justify-center gap-5 mt-10 pt-16">
         <h1 class="text-3xl font-bold text-[#091831]">Riwayat Pencarian</h1>
         <p class="text-lg text-[#7B9EA8]">Semua aktivitas pencarian keyword di Kamus IT Pedia tersimpan di sini.</p>
     </div>
